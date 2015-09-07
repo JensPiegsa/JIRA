@@ -20,7 +20,7 @@ RUN apt-get update -qq && \
 
     mkdir -p                ${JIRA_HOME} && \
 
-    cp                      /tmp/dbconfig-template.xml ${JIRA_HOME}/dbconfig-template.xml && \
+    cp                      /tmp/dbconfig-template.xml $JIRA_HOME/dbconfig-template.xml && \
 
     chmod -R 700            ${JIRA_HOME} && \
     chown -R daemon:daemon  ${JIRA_HOME} && \
@@ -40,7 +40,6 @@ RUN apt-get update -qq && \
 
     augtool -LeAf           /tmp/adjust-config-files.aug -r ${JIRA_INSTALL}/ && \
 
-    rm -R                   /tmp/* && \
 
     chmod -R 700            ${JIRA_INSTALL}/conf && \
     chmod -R 700            ${JIRA_INSTALL}/logs && \
@@ -55,6 +54,8 @@ RUN apt-get update -qq && \
     sed -i "/^jira.home =.*/c\jira.home = ${JIRA_HOME}" ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties && \
 
     apt-get remove -qq --purge -y ${BUILD_PACKAGES} $(apt-mark showauto) && rm -rf /var/lib/apt/lists/*
+
+# rm -R                   /tmp/* && \
 
 # Use the default unprivileged account. This could be considered bad practice on systems where
 # multiple processes end up being executed by 'daemon' but here we only ever run one process anyway.
