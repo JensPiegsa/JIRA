@@ -1,8 +1,8 @@
 FROM piegsaj/oracle-jre:latest
 
-# Configuration variables.
+MAINTAINER Jens Piegsa (piegsa@gmail.com)
+
 ENV MYSQL_CONNECTOR_VERSION 5.1.36
-#ENV JIRA_VERSION 7.0.0-m03 && \
 
 ENV JIRA_HOME               /var/atlassian/jira
 ENV JIRA_INSTALL            /opt/atlassian/jira
@@ -27,10 +27,8 @@ RUN apt-get update -qq && \
     mkdir -p                ${JIRA_INSTALL}/conf/Catalina && \
     mkdir -p                ${JIRA_INSTALL}/lib && \
 
-    # e.g. 7.0.0-m03
     JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
     
-    # e.g. https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-core-7.0.0-m03.tar.gz
     JIRA_DOWNLOAD_URL=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
     
     echo $JIRA_VERSION >$JIRA_INSTALL/jira.version && \
@@ -40,7 +38,7 @@ RUN apt-get update -qq && \
 
     cp                      /tmp/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar ${JIRA_INSTALL}/lib/ && \
 
-    augtool -LeAf /tmp/adjust-config-files.aug -r ${JIRA_INSTALL}/ && \
+    augtool -LeAf           /tmp/adjust-config-files.aug -r ${JIRA_INSTALL}/ && \
 
     rm -R                   /tmp/* && \
 
@@ -73,5 +71,4 @@ VOLUME ["/var/atlassian/jira"]
 WORKDIR ${JIRA_HOME}
 
 # Run Atlassian JIRA as a foreground process by default.
-#CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg"]
 CMD ["run-jira.sh"] 
