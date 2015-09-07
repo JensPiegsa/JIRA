@@ -5,7 +5,8 @@ ENV MYSQL_CONNECTOR_VERSION 5.1.36
 ENV JIRA_HOME               /var/atlassian/jira
 ENV JIRA_INSTALL            /opt/atlassian/jira
 
-ENV BUILD_PACKAGES          augeas-tools xmlstarlet curl jq
+ENV BUILD_PACKAGES          xmlstarlet curl jq
+ENV RUNTIME_PACKAGES        libtcnative-1 augeas-tools 
 
 ADD run-jira.sh             /usr/bin/run-jira.sh
 ADD dbconfig-template.xml   /tmp/dbconfig-template.xml
@@ -13,7 +14,7 @@ ADD adjust-config-files.aug /tmp/adjust-config-files.aug
 
 # Install Atlassian JIRA, some helper tools and setup initial home directory structure.
 RUN apt-get update -qq && \
-    apt-get install -qq -y --no-install-recommends libtcnative-1 $BUILD_PACKAGES && \
+    apt-get install -qq -y --no-install-recommends $RUNTIME_PACKAGES $BUILD_PACKAGES && \
     apt-get clean -qq && \
 
     mkdir -p                "${JIRA_HOME}" && \
