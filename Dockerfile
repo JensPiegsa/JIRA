@@ -9,9 +9,9 @@ ENV JIRA_INSTALL            /opt/atlassian/jira
 ENV BUILD_PACKAGES          xmlstarlet curl jq
 ENV RUNTIME_PACKAGES        libtcnative-1 augeas-tools
 
-ADD run-jira.sh             /usr/bin/run-jira.sh
-ADD dbconfig-template.xml   /tmp/dbconfig-template.xml
-ADD adjust-config-files.aug /tmp/adjust-config-files.aug
+ADD run-jira.sh             /usr/bin/
+ADD dbconfig-template.xml   /tmp/
+ADD adjust-config-files.aug /tmp/
 
 # Install Atlassian JIRA and helper tools and setup initial home directory structure.
 RUN apt-get update -qq && \
