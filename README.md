@@ -4,7 +4,7 @@
 
 ### 0. Prerequisites ###
 
-* [Docker](http://docs.docker.com/windows/started/)
+* [Docker](http://docs.docker.com/windows/step_one/)
 
 ### 1. Initialize a database ###
 
