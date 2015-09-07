@@ -1,11 +1,11 @@
 FROM piegsaj/oracle-jre:latest
 
-# Configuration variables.
 ENV MYSQL_CONNECTOR_VERSION 5.1.36
+ENV JIRA_VERSION            7.0.0-m03
+
 ENV JIRA_HOME               /var/atlassian/jira
 ENV JIRA_INSTALL            /opt/atlassian/jira
-
-ENV BUILD_PACKAGES          curl jq
+ENV BUILD_PACKAGES          curl
 ENV RUNTIME_PACKAGES        libtcnative-1 augeas-tools 
 
 ADD run-jira.sh             /usr/bin/run-jira.sh
@@ -26,7 +26,9 @@ RUN apt-get update -qq && \
     mkdir -p                "${JIRA_INSTALL}/conf/Catalina" && \
     mkdir -p                "${JIRA_INSTALL}/lib" && \
 
-    JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar")) | select(.description|contains("WAR") | not) | .version') && \
+    # installation of jq fails on docker hub
+    #JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar")) | select(.description|contains("WAR") | not) | .version') && \
+    
     echo $JIRA_VERSION >$JIRA_INSTALL/jira.version && \
 
     curl -Ls                "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${JIRA_VERSION}.tar.gz" | tar xz --directory="${JIRA_INSTALL}" --strip-components=1 --no-same-owner && \
