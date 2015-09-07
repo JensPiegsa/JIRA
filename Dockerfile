@@ -31,7 +31,7 @@ RUN apt-get update -qq && \
     
     JIRA_DOWNLOAD_URL=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
     
-    echo $JIRA_VERSION >$JIRA_INSTALL/jira.version && \
+    echo ${JIRA_VERSION} >${JIRA_INSTALL}/jira.version && \
 
     curl -Ls                ${JIRA_DOWNLOAD_URL} | tar xz --directory=${JIRA_INSTALL} --strip-components=1 --no-same-owner && \
     curl -Ls                http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.tar.gz | tar xz --directory=/tmp --no-same-owner && \
