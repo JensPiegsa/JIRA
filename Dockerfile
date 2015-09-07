@@ -5,7 +5,7 @@ ENV MYSQL_CONNECTOR_VERSION 5.1.36
 ENV JIRA_HOME               /var/atlassian/jira
 ENV JIRA_INSTALL            /opt/atlassian/jira
 
-ENV BUILD_PACKAGES          xmlstarlet curl jq
+ENV BUILD_PACKAGES          curl jq
 ENV RUNTIME_PACKAGES        libtcnative-1 augeas-tools 
 
 ADD run-jira.sh             /usr/bin/run-jira.sh
