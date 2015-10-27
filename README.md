@@ -14,6 +14,8 @@ This docker file provides a container with the latest JIRA version of Atlassians
 
 ### 1b. Alternatively use an existing database
 
+* Create MySQL database schema and user:
+
 ```sql
 CREATE DATABASE IF NOT EXISTS `jira`;
 CREATE USER 'jira'@'%' IDENTIFIED BY 'jira';
@@ -22,6 +24,8 @@ FLUSH PRIVILEGES;
 ```
 
 ### 2. Create a custom data-only Docker container
+
+(with a volume pointing to $JIRA_HOME)
 
 * `docker run --name=jira-data -v /var/atlassian/jira piegsaj/jira:latest true`
 
