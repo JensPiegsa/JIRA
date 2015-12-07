@@ -11,7 +11,7 @@ This docker file provides a container with the latest JIRA version of Atlassians
 ### 1a. Initialize a database
 
 * `docker run --name=jiradb -d -p 3306:3306 -v /etc/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="root" -e MYSQL_DATABASE="jira" -e MYSQL_USER="jira" -e MYSQL_PASSWORD="jira" mysql:5.6`
-* `ALTER SCHEMA `transfer`  DEFAULT CHARACTER SET utf8  DEFAULT COLLATE utf8_general_ci;`
+* `ALTER SCHEMA jira  DEFAULT CHARACTER SET utf8  DEFAULT COLLATE utf8_general_ci;`
 
 ### 1b. Alternatively use a custom database schema
 
