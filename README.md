@@ -1,6 +1,6 @@
 # Dockerfile for JIRA EAP
 
-This docker file provides a container with the latest JIRA version of Atlassians [Early Access Program](https://de.atlassian.com/software/jira/download-eap) for testing purposes.
+This docker file provides a container with the latest JIRA version for testing purposes.
 
 ## Usage example
 
@@ -56,5 +56,4 @@ docker start jira
 
 ## See also
 
-* [JIRA EAP Release Notes](https://developer.atlassian.com/jiradev/latest-updates/jira-eap-releases)
 * [JIRA REST API Reference](https://docs.atlassian.com/jira/REST/ondemand/)
