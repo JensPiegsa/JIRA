@@ -1,4 +1,4 @@
-# Dockerfile for JIRA EAP
+# Dockerfile for JIRA
 
 This docker file provides a container with the latest JIRA version for testing purposes.
 
