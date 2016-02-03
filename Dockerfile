@@ -2,7 +2,7 @@ FROM piegsaj/oracle-jre:latest
 
 MAINTAINER Jens Piegsa (piegsa@gmail.com)
 
-ENV MYSQL_CONNECTOR_VERSION 5.1.36
+ENV MYSQL_CONNECTOR_VERSION 5.1.38
 
 ENV JIRA_HOME               /var/atlassian/jira
 ENV JIRA_INSTALL            /opt/atlassian/jira
@@ -27,9 +27,9 @@ RUN apt-get update -qq && \
     mkdir -p                ${JIRA_INSTALL}/conf/Catalina && \
     mkdir -p                ${JIRA_INSTALL}/lib && \
 
-    JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
+    JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/current/jira-core.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
     
-    JIRA_DOWNLOAD_URL=$(curl https://my.atlassian.com/download/feeds/eap/jira.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
+    JIRA_DOWNLOAD_URL=$(curl https://my.atlassian.com/download/feeds/current/jira-core.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
     
     echo ${JIRA_VERSION} >${JIRA_INSTALL}/jira.version && \
 
