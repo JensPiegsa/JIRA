@@ -24,17 +24,21 @@ GRANT ALL ON `jira`.* TO 'jira'@'%';
 FLUSH PRIVILEGES;
 ```
 
-### 2. Create a custom data-only Docker container
+### 2. Get the latest image
+
+* `docker pull piegsaj/jira:latest`
+
+### 3. Create a custom data-only Docker container
 
 (with a volume pointing to $JIRA_HOME)
 
 * `docker run --name=jira-data -v /var/atlassian/jira piegsaj/jira:latest true`
 
-### 3. Run JIRA ###
+### 4. Run JIRA ###
 
 * `docker run --name=jira -d -p 8080:8080 --link=db:db --volumes-from jira-data -e CATALINA_OPTS="-Xms128m -Xmx2048m -Datlassian.darkfeature.jira.onboarding.feature.disabled=true -Datlassian.plugins.enable.wait=300" piegsaj/jira:latest`
 
-### 4. Start up your browser
+### 5. Start up your browser
 
 * target, e.g. `http://192.168.99.100:8080/`
 
