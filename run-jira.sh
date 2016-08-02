@@ -17,7 +17,15 @@ DB_SCHEMA=${DB_ENV_MYSQL_DATABASE:=$DB_SCHEMA}
 
 cp $JIRA_HOME/dbconfig-template.xml $JIRA_HOME/dbconfig.xml
 
-sed -i -e "/${DB_TYPE}_TEMPLATE/d" -e "s/\$DB_ADDRESS/$DB_ADDRESS/" -e "s/\$DB_PORT/$DB_PORT/" -e "s/\$DB_SCHEMA/$DB_SCHEMA/" -e "s/\$DB_USER/$DB_USER/" -e "s/\$DB_PASSWORD/$DB_PASSWORD/" $JIRA_HOME/dbconfig.xml
+sed -i \
+-e "/${DB_TYPE}_TEMPLATE/d" \
+-e "s/\$DB_ADDRESS/$DB_ADDRESS/" \
+-e "s/\$DB_PORT/$DB_PORT/" \
+-e "s/\$DB_SCHEMA/$DB_SCHEMA/" \
+-e "s/\$DB_USER/$DB_USER/" \
+-e "s/\$DB_PASSWORD/$DB_PASSWORD/" \
+-e "s/\$DB_SSL/$DB_SSL/g" \
+$JIRA_HOME/dbconfig.xml
 
 echo "STARTING JIRA $JIRA_VERSION..."
 exec /opt/atlassian/jira/bin/start-jira.sh -fg
