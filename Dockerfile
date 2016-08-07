@@ -61,7 +61,7 @@ RUN apt-get update -qq && \
 USER daemon:daemon
 
 # Expose default HTTP connector port.
-EXPOSE 8080
+EXPOSE 8080 8443
 
 # Set volume mount points for installation and home directory. Changes to the home directory need
 # to be persisted as well as parts of the installation directory due to eg. logs.
