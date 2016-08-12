@@ -51,6 +51,7 @@ RUN apt-get update -qq && \
     chown -R daemon:daemon  ${JIRA_INSTALL}/temp && \
     chown -R daemon:daemon  ${JIRA_INSTALL}/work && \
     chmod +x                /usr/bin/run-jira.sh && \
+    chown daemon:daemon     $JAVA_HOME/jre/lib/security/cacerts && \
 
     sed -i "/^jira.home =.*/c\jira.home = ${JIRA_HOME}" ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties && \
 
