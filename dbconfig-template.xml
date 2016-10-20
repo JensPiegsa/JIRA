@@ -6,7 +6,7 @@
   <delegator-name>default</delegator-name>
   <database-type>mysql</database-type>
   <jdbc-datasource>
-    <url>jdbc:mysql://$DB_ADDRESS:$DB_PORT/$DB_SCHEMA?useUnicode=true&amp;characterEncoding=UTF8&amp;sessionVariables=storage_engine=InnoDB</url>
+    <url>jdbc:mysql://$DB_ADDRESS:$DB_PORT/$DB_SCHEMA?requireSSL=$DB_SSL&amp;useSSL=$DB_SSL&amp;verifyServerCertificate=false&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;sessionVariables=storage_engine=InnoDB</url>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
     <username>$DB_USER</username>
     <password>$DB_PASSWORD</password>
