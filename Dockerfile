@@ -11,9 +11,9 @@ ENV RUNTIME_PACKAGES        libtcnative-1 augeas-tools
 
 ADD dbconfig-template.xml                /tmp/
 ADD adjust-log4j-properties.aug          /tmp/
-ADD adjust-server-xml.aug                /
-ADD adjust-server-xml-proxy-settings.aug /
-ADD run-jira.sh                          /
+ADD adjust-server-xml.aug                /opt/
+ADD adjust-server-xml-proxy-settings.aug /opt/
+ADD run-jira.sh                          /opt/
 
 RUN apt-get update -qq && \
     apt-get install -qq -y --no-install-recommends ${RUNTIME_PACKAGES} ${BUILD_PACKAGES} && \
@@ -51,7 +51,7 @@ RUN apt-get update -qq && \
     chown -R daemon:daemon  ${JIRA_INSTALL}/logs && \
     chown -R daemon:daemon  ${JIRA_INSTALL}/temp && \
     chown -R daemon:daemon  ${JIRA_INSTALL}/work && \
-    chmod +x                /run-jira.sh && \
+    chmod +x                /opt/run-jira.sh && \
     chown daemon:daemon     $JAVA_HOME/jre/lib/security/cacerts && \
 
     sed -i "/^jira.home =.*/c\jira.home = ${JIRA_HOME}" ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties && \
@@ -68,4 +68,4 @@ VOLUME /etc/jira
 
 WORKDIR ${JIRA_HOME}
 
-CMD ["/run-jira.sh"]
+CMD ["/opt/run-jira.sh"]
