@@ -1,5 +1,4 @@
 #!/bin/bash
-
 export JIRA_VERSION=$(cat $JIRA_INSTALL/jira.version)
 
 echo "STARTING JIRA VERSION $JIRA_VERSION..."
