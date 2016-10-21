@@ -6,9 +6,9 @@ echo "STARTING JIRA VERSION $JIRA_VERSION..."
 if [ ! -f ${JIRA_INSTALL}/conf/.docker_container_initialized ]; then
   echo "INITIALIZING..."
 
-  # insert HTTPS connector if keystore is provided  
+  # insert HTTPS connector if keystore is provided
   if [ ! -z "$KEYSTORE_FILE" ]; then
-    augtool -LeAf /adjust-server-xml.aug -r ${JIRA_INSTALL}/
+    augtool -LeAf /opt/adjust-server-xml.aug -r ${JIRA_INSTALL}/
 
     sed -i 's@$KEYSTORE_FILE@'"$KEYSTORE_FILE"'@g' ${JIRA_INSTALL}/server.xml
     sed -i 's@$KEYSTORE_PASS@'"$KEYSTORE_PASS"'@g' ${JIRA_INSTALL}/server.xml
@@ -16,7 +16,7 @@ if [ ! -f ${JIRA_INSTALL}/conf/.docker_container_initialized ]; then
     
     # insert optional proxy attributes to HTTPS connector
     if [ ! -z "$PROXY_NAME"]; then
-      augtool -LeAf /adjust-server-xml-proxy-settings.aug -r ${JIRA_INSTALL}/
+      augtool -LeAf /opt/adjust-server-xml-proxy-settings.aug -r ${JIRA_INSTALL}/
       sed -i 's@$PROXY_NAME@'"$PROXY_NAME"'@g' ${JIRA_INSTALL}/server.xml
       sed -i 's@$PROXY_PORT@'"$PROXY_PORT"'@g' ${JIRA_INSTALL}/server.xml
     fi
