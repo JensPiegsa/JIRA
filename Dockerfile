@@ -68,4 +68,4 @@ VOLUME /etc/jira
 
 WORKDIR ${JIRA_HOME}
 
-CMD ["/run-jira.sh"] 
+CMD ["/run-jira.sh"]
