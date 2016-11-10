@@ -3,27 +3,38 @@ export JIRA_VERSION=$(cat $JIRA_INSTALL/jira.version)
 
 echo "STARTING JIRA VERSION $JIRA_VERSION..."
 
-if [ ! -f ${JIRA_INSTALL}/conf/.docker_container_initialized ]; then
+JIRA_CONF="${JIRA_INSTALL}/conf"
+
+if [ ! -f ${JIRA_CONF}/.docker_container_initialized ] ; then
   echo "INITIALIZING..."
-
+  
   # insert HTTPS connector if keystore is provided
-  if [ ! -z "$KEYSTORE_FILE" ]; then
-    augtool -LeAf /opt/adjust-server-xml.aug -r ${JIRA_INSTALL}/
+  if [ ! -z "$KEYSTORE_FILE" ] ; then
+    augtool -LeAf /opt/adjust-server-xml.aug -r ${JIRA_CONF}/
 
-    sed -i 's@$KEYSTORE_FILE@'"$KEYSTORE_FILE"'@g' ${JIRA_INSTALL}/server.xml
-    sed -i 's@$KEYSTORE_PASS@'"$KEYSTORE_PASS"'@g' ${JIRA_INSTALL}/server.xml
-    sed -i 's@$KEY_ALIAS@'"$KEY_ALIAS"'@g' ${JIRA_INSTALL}/server.xml
-    
+    sed -i 's@$KEYSTORE_FILE@'"$KEYSTORE_FILE"'@g' ${JIRA_CONF}/server.xml
+    sed -i 's@$KEYSTORE_PASS@'"$KEYSTORE_PASS"'@g' ${JIRA_CONF}/server.xml
+    sed -i 's@$KEY_ALIAS@'"$KEY_ALIAS"'@g' ${JIRA_CONF}/server.xml
+
     # insert optional proxy attributes to HTTPS connector
-    if [ ! -z "$PROXY_NAME"]; then
-      augtool -LeAf /opt/adjust-server-xml-proxy-settings.aug -r ${JIRA_INSTALL}/
-      sed -i 's@$PROXY_NAME@'"$PROXY_NAME"'@g' ${JIRA_INSTALL}/server.xml
-      sed -i 's@$PROXY_PORT@'"$PROXY_PORT"'@g' ${JIRA_INSTALL}/server.xml
+    if [ ! -z "$PROXY_NAME"] ; then
+      augtool -LeAf /opt/adjust-server-xml-proxy-settings.aug -r ${JIRA_CONF}/
+      sed -i 's@$PROXY_NAME@'"$PROXY_NAME"'@g' ${JIRA_CONF}/server.xml
+      sed -i 's@$PROXY_PORT@'"$PROXY_PORT"'@g' ${JIRA_CONF}/server.xml
     fi
- 
+
+    # optionally import foreign SSL certificates that you trust
+    if [ ! -z "${IMPORT_CERTS_DIR}" ] ; then
+        CA_KEYSTORE="${JAVA_HOME}/jre/lib/security/cacerts"
+        for CERT in "${IMPORT_CERTS_DIR}"/* ; do
+            echo "IMPORTING CERT ${CERT}..."
+            keytool -import -v -trustcacerts -alias "${CERT}" -file "${CERT}" \
+                    -keystore "${CA_KEYSTORE}" -keypass changeit -storepass changeit -noprompt
+        done
+    fi
   fi
 
-  touch ${JIRA_INSTALL}/conf/.docker_container_initialized
+  touch ${JIRA_CONF}/.docker_container_initialized
 fi
 
 # if this container is instantiated with --link=mysql:db use the environment variables provided by docker
@@ -47,5 +58,5 @@ sed -i \
  -e "s/\$DB_SSL/$DB_SSL/g" \
  $JIRA_HOME/dbconfig.xml
 
-echo "STARTING JIRA SERVER ..."
+echo "STARTING JIRA SERVER..."
 exec ${JIRA_INSTALL}/bin/start-jira.sh -fg
