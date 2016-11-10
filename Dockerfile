@@ -28,9 +28,11 @@ RUN apt-get update -qq && \
     mkdir -p                ${JIRA_INSTALL}/conf/Catalina && \
     mkdir -p                ${JIRA_INSTALL}/lib && \
 
-    JIRA_VERSION=$(curl https://my.atlassian.com/download/feeds/current/jira-core.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
+    JSON_FEED=https://my.atlassian.com/download/feeds/current/jira-core.json && \
+
+    JIRA_VERSION=$(curl $JSON_FEED -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
     
-    JIRA_DOWNLOAD_URL=$(curl https://my.atlassian.com/download/feeds/current/jira-core.json -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
+    JIRA_DOWNLOAD_URL=$(curl $JSON_FEED -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .zipUrl') && \
     
     echo ${JIRA_VERSION} >${JIRA_INSTALL}/jira.version && \
 
