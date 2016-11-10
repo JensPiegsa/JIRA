@@ -28,7 +28,7 @@ RUN apt-get update -qq && \
     mkdir -p                ${JIRA_INSTALL}/conf/Catalina && \
     mkdir -p                ${JIRA_INSTALL}/lib && \
 
-    JSON_FEED=https://my.atlassian.com/download/feeds/current/jira-core.json && \
+    JSON_FEED=https://my.atlassian.com/download/feeds/eap/jira.json && \
 
     JIRA_VERSION=$(curl $JSON_FEED -Ls | cut -b 11- | rev | cut -c 2- | rev | jq -r '.[] | select(.zipUrl | contains("tar.gz")) | select(.zipUrl | contains("source") | not) | .version') && \
     
