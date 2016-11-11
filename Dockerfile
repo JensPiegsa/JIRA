@@ -79,14 +79,14 @@ RUN apt-get update -qq && \
     chmod -R 700            ${JIRA_INSTALL}/logs && \
     chmod -R 700            ${JIRA_INSTALL}/temp && \
     chmod -R 700            ${JIRA_INSTALL}/work && \
-    chown -R daemon:daemon  ${JIRA_INSTALL}/conf && \
-    chown -R daemon:daemon  ${JIRA_INSTALL}/logs && \
-    chown -R daemon:daemon  ${JIRA_INSTALL}/temp && \
-    chown -R daemon:daemon  ${JIRA_INSTALL}/work && \
+    chown -R jira:jira      ${JIRA_INSTALL}/conf && \
+    chown -R jira:jira      ${JIRA_INSTALL}/logs && \
+    chown -R jira:jira      ${JIRA_INSTALL}/temp && \
+    chown -R jira:jira      ${JIRA_INSTALL}/work && \
     chmod +x                /opt/run-jira.sh && \
-    chown daemon:daemon     $JAVA_HOME/jre/lib/security/cacerts && \
+    chown jira:jira         $JAVA_HOME/jre/lib/security/cacerts && \
     chmod -R 700            ${JIRA_HOME} && \
-    chown -R daemon:daemon  ${JIRA_HOME} && \
+    chown -R jira:jira      ${JIRA_HOME} && \
 
 #   Clean up
 
@@ -94,7 +94,7 @@ RUN apt-get update -qq && \
     rm -rf                  /var/lib/apt/lists/* && \
     rm -rf                  /tmp/*
 
-USER daemon:daemon
+USER jira:jira
 
 EXPOSE 8005 8080 8443
 
