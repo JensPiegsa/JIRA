@@ -45,8 +45,6 @@ RUN apt-get update -qq && \
     JIRA_DOWNLOAD_URL=$(echo "$JSON" | jq -r "$JSON_SELECTOR | .zipUrl") && \
     MYSQL_CONNECTOR="mysql-connector-java-${MYSQL_CONNECTOR_VERSION}" && \
         
-    echo "${JIRA_VERSION}" > ${JIRA_INSTALL}/jira.version && \
-
 #   Download and install JIRA
 
     curl -Ls                ${JIRA_DOWNLOAD_URL} -o /tmp/jira.bin && \
@@ -58,12 +56,13 @@ RUN apt-get update -qq && \
     curl -Ls                http://dev.mysql.com/get/Downloads/Connector-J/${MYSQL_CONNECTOR}.tar.gz | tar xz --directory=/tmp --no-same-owner && \
     cp                      /tmp/${MYSQL_CONNECTOR}/${MYSQL_CONNECTOR}-bin.jar ${JIRA_INSTALL}/lib/ && \
 
-	mkdir -p                ${JIRA_HOME}/plugins/installed-plugins/ && \
+    mkdir -p                ${JIRA_HOME}/plugins/installed-plugins/ && \
 
 #   Add plugins
 
     curl -Ls https://marketplace.atlassian.com/download/plugins/jiracustomfieldeditorplugin/version/${CUSTOMFIELD_EDITOR_PLUGIN_BUILD} \
          -o  ${JIRA_HOME}/plugins/installed-plugins/customfield-editor-plugin-${CUSTOMFIELD_EDITOR_PLUGIN_BUILD}.jar && \
+
     curl -Ls https://marketplace.atlassian.com/download/plugins/com.atlassian.labs.rest-api-browser/version/${REST_API_BROWSER_PLUGIN_BUILD} \
          -o  ${JIRA_HOME}/plugins/installed-plugins/rest-api-browser-plugin-${REST_API_BROWSER_PLUGIN_BUILD}.jar && \
 
@@ -72,6 +71,8 @@ RUN apt-get update -qq && \
     cp                      /tmp/dbconfig-template.xml ${JIRA_HOME}/dbconfig-template.xml && \
     augtool -LeAf           /tmp/adjust-log4j-properties.aug -r ${JIRA_INSTALL}/ && \
     sed -i "/^jira.home =.*/c\jira.home = ${JIRA_HOME}" ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties && \
+    echo                    "${JIRA_VERSION}" > ${JIRA_INSTALL}/jira.version && \
+
 
 #   Adjust file permissions
 
